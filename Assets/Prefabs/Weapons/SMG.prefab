@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 5189213556852235479}
   - component: {fileID: 8981727951124921214}
   - component: {fileID: 1028476848228621315}
+  - component: {fileID: -6623599188943315797}
+  - component: {fileID: -3413838060053127946}
   m_Layer: 0
   m_Name: SMG
   m_TagString: Untagged
@@ -106,6 +108,42 @@ MonoBehaviour:
   currentAmmoInMag: 30
   totalAmmo: 30
   rotationSpeed: 180
+--- !u!114 &-6623599188943315797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6096463992465449017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111f04111ec637a42ae20b48161b4967, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponName: SMG
+  weaponPrefab: {fileID: 6096463992465449017}
+  weaponType: 2
+  spread: 1
+  bulletRange: 50
+  fireRate: 20
+  magazineSize: 25
+  maxAmmo: 75
+  bulletPrefab: {fileID: 5816894742159069417, guid: 92c55fe47d61bb14dada55d9c4a2d16d, type: 3}
+  firePoint: {fileID: 8949091785216644433}
+  weaponController: {fileID: 1028476848228621315}
+--- !u!114 &-3413838060053127946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6096463992465449017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38962161ce75b44469cfe3b9e8420aec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 15
 --- !u!1 &8867432069790482948
 GameObject:
   m_ObjectHideFlags: 0

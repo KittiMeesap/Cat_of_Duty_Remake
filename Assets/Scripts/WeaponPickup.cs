@@ -14,7 +14,7 @@ public class WeaponPickup : MonoBehaviour
             // ตรวจสอบว่า weapon นี้อยู่ใน inventory ของผู้เล่นหรือไม่
             foreach (Weapons ownedWeapon in player.ownedWeapons)
             {
-                if (ownedWeapon == weapon)
+                if (ownedWeapon.weaponName == weapon.weaponName) // ตรวจสอบชื่อปืนแทน
                 {
                     weaponExists = true;
                     AddAmmoToWeapon(ownedWeapon, player); // เพิ่มกระสุนให้ปืนที่มีอยู่แล้ว

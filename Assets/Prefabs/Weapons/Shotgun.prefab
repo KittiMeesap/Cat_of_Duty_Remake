@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 7134361884491775905}
   - component: {fileID: 3624132414067822028}
   - component: {fileID: 2861408923576925910}
+  - component: {fileID: -2349331293754471464}
+  - component: {fileID: -3674981504373281906}
   m_Layer: 0
   m_Name: Shotgun
   m_TagString: Untagged
@@ -105,6 +107,43 @@ MonoBehaviour:
   firePoint: {fileID: 5885816290167374742}
   currentAmmoInMag: 8
   totalAmmo: 8
+  rotationSpeed: 180
+--- !u!114 &-2349331293754471464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4902956103986137542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111f04111ec637a42ae20b48161b4967, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponName: Shotgun
+  weaponPrefab: {fileID: 4902956103986137542}
+  weaponType: 3
+  spread: 5
+  bulletRange: 10
+  fireRate: 1
+  magazineSize: 8
+  maxAmmo: 24
+  bulletPrefab: {fileID: 150040154368022213, guid: bd7b6288d2537524c9bae126e5ae3d8c, type: 3}
+  firePoint: {fileID: 5885816290167374742}
+  weaponController: {fileID: 2861408923576925910}
+--- !u!114 &-3674981504373281906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4902956103986137542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38962161ce75b44469cfe3b9e8420aec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 50
 --- !u!1 &6908005422334008864
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerWeaponManager : MonoBehaviour
 {
-    public List<Weapons> ownedWeapons = new List<Weapons>();
+    public List<Weapons> ownedWeapons = new List<Weapons>();  // รายการอาวุธที่มี
     public int currentWeaponIndex = 0;
 
     public WeaponController weaponController;
@@ -50,10 +50,7 @@ public class PlayerWeaponManager : MonoBehaviour
         weaponController = currentWeaponObject.GetComponent<WeaponController>();
         weaponController.equippedWeapon = selectedWeapon;
 
-        // ตั้งค่า FirePoint จาก WeaponController
-        Transform firePoint = currentWeaponObject.transform.Find(selectedWeapon.weaponName + "FirePoint");
-        weaponController.SetFirePoint(firePoint);
-
+        // ไม่มีการใช้ SetFirePoint แล้ว เพราะ firePoint ถูกตั้งค่าจาก WeaponController เอง
         Debug.Log("Equipped: " + selectedWeapon.weaponName);
     }
 
@@ -77,8 +74,8 @@ public class PlayerWeaponManager : MonoBehaviour
     {
         if (Input.GetButton("Fire1") && Time.time >= nextFireTime && weaponController != null)
         {
-            Shoot();
-            nextFireTime = Time.time + 1f / weaponController.equippedWeapon.fireRate;
+            Shoot(); // ฟังก์ชันที่ยิงกระสุน
+            nextFireTime = Time.time + 1f / weaponController.equippedWeapon.fireRate; // รีเซ็ตเวลาการยิง
         }
     }
 
@@ -102,11 +99,11 @@ public class PlayerWeaponManager : MonoBehaviour
     {
         if (weaponController.currentAmmoInMag > 0 || weaponController.equippedWeapon.weaponType == WeaponType.Pistol)
         {
-            if (weaponController.equippedWeapon.bulletPrefab != null && weaponController.firePoint != null)
+            if (weaponController.equippedWeapon.bulletPrefab != null && weaponController.equippedWeapon.firePoint != null)
             {
-                GameObject bullet = Instantiate(weaponController.equippedWeapon.bulletPrefab, weaponController.firePoint.position, weaponController.firePoint.rotation);
+                GameObject bullet = Instantiate(weaponController.equippedWeapon.bulletPrefab, weaponController.equippedWeapon.firePoint.position, weaponController.equippedWeapon.firePoint.rotation);
                 Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-                Vector2 shootDirection = weaponController.firePoint.right;
+                Vector2 shootDirection = weaponController.equippedWeapon.firePoint.right;
 
                 // การกระจายของกระสุน
                 float spreadAngle = Random.Range(-weaponController.equippedWeapon.spread, weaponController.equippedWeapon.spread);
@@ -118,7 +115,7 @@ public class PlayerWeaponManager : MonoBehaviour
             // ลดจำนวนกระสุนในแม็กกาซีน
             if (weaponController.equippedWeapon.weaponType != WeaponType.Pistol)
             {
-                weaponController.currentAmmoInMag--;
+                weaponController.currentAmmoInMag--; // ลดกระสุน
             }
         }
     }
@@ -133,12 +130,11 @@ public class PlayerWeaponManager : MonoBehaviour
 
     public void AddWeapon(Weapons newWeapon)
     {
-        if (!ownedWeapons.Contains(newWeapon))
+        if (!ownedWeapons.Exists(weapon => weapon.weaponName == newWeapon.weaponName))
         {
-            ownedWeapons.Add(newWeapon);  // เพิ่มปืนเข้า inventory
+            ownedWeapons.Add(newWeapon);
             Debug.Log("Picked up: " + newWeapon.weaponName);
 
-            // เมื่อมีการเพิ่มปืนใหม่ จะทำการเลือกปืนใหม่ทันที
             EquipWeapon(ownedWeapons.Count - 1);
         }
         else

@@ -1,15 +1,13 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-public enum WeaponType { Pistol, AR, SMG, Shotgun }
-
-[CreateAssetMenu(fileName = "New Weapon", menuName = "Weapon")]
-public class Weapons : ScriptableObject
+public enum WeaponType { Pistol, Handcannon, AR, SMG, Shotgun }
+public class Weapons : MonoBehaviour
 {
     public string weaponName;
     public GameObject weaponPrefab;
     public WeaponType weaponType;
-    public float damage;
     public float spread;
+    public float bulletRange = 50f;
     public float fireRate;
     public int magazineSize;
     public int maxAmmo;

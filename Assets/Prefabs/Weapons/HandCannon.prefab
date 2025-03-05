@@ -42,6 +42,8 @@ GameObject:
   - component: {fileID: 3096063876713023480}
   - component: {fileID: 4901080563451002282}
   - component: {fileID: 4733805429060404037}
+  - component: {fileID: 4634309865286916171}
+  - component: {fileID: -6636821025156091197}
   m_Layer: 0
   m_Name: HandCannon
   m_TagString: Untagged
@@ -136,3 +138,40 @@ MonoBehaviour:
   firePoint: {fileID: 6103069051898341647}
   currentAmmoInMag: 10
   totalAmmo: 10
+  rotationSpeed: 180
+--- !u!114 &4634309865286916171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7391216411228747330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111f04111ec637a42ae20b48161b4967, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponName: 
+  weaponPrefab: {fileID: 7391216411228747330}
+  weaponType: 1
+  spread: 1
+  bulletRange: 50
+  fireRate: 1
+  magazineSize: 8
+  maxAmmo: 24
+  bulletPrefab: {fileID: 150040154368022213, guid: bd7b6288d2537524c9bae126e5ae3d8c, type: 3}
+  firePoint: {fileID: 6103069051898341647}
+  weaponController: {fileID: 4733805429060404037}
+--- !u!114 &-6636821025156091197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7391216411228747330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38962161ce75b44469cfe3b9e8420aec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 50

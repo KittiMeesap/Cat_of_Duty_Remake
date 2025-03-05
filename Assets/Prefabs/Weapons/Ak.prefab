@@ -42,6 +42,8 @@ GameObject:
   - component: {fileID: 1389895211342931018}
   - component: {fileID: 718729977726471912}
   - component: {fileID: 264483403930063890}
+  - component: {fileID: 3025138166853792672}
+  - component: {fileID: -2890159330204315169}
   m_Layer: 0
   m_Name: Ak
   m_TagString: Untagged
@@ -137,3 +139,39 @@ MonoBehaviour:
   currentAmmoInMag: 30
   totalAmmo: 30
   rotationSpeed: 180
+--- !u!114 &3025138166853792672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8303001320290148958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111f04111ec637a42ae20b48161b4967, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponName: AK
+  weaponPrefab: {fileID: 8303001320290148958}
+  weaponType: 1
+  spread: 1
+  bulletRange: 50
+  fireRate: 30
+  magazineSize: 30
+  maxAmmo: 90
+  bulletPrefab: {fileID: 6977387708991528478, guid: eb2540b6c7935d84eb0c220598878ff2, type: 3}
+  firePoint: {fileID: 4231460807649518638}
+  weaponController: {fileID: 264483403930063890}
+--- !u!114 &-2890159330204315169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8303001320290148958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38962161ce75b44469cfe3b9e8420aec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 30

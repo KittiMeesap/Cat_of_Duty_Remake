@@ -2,40 +2,28 @@
 
 public class WeaponController : MonoBehaviour
 {
-    public Weapons equippedWeapon;
-    public Transform firePoint;  // จุดที่ยิงของปืน
-    public int currentAmmoInMag;
-    public int totalAmmo;
+    public Weapons equippedWeapon;  // อ้างอิงถึงอาวุธที่ถืออยู่
+    public int currentAmmoInMag;  // จำนวนกระสุนในแม็กกาซีน
+    public int totalAmmo;  // จำนวนกระสุนทั้งหมด
 
-    public float rotationSpeed = 180f; // ความเร็วในการหมุนปืน
+    public float rotationSpeed = 180f;  // ความเร็วในการหมุนปืน
 
     private bool isFlipped = false;  // ตัวแปรบ่งบอกสถานะการ flip ของปืน
     private SpriteRenderer spriteRenderer;
 
     private void Start()
     {
-        // ตรวจสอบว่าได้กำหนดอาวุธและการตั้งค่าอื่นๆหรือไม่
+        // ตรวจสอบว่าได้กำหนดอาวุธและการตั้งค่าอื่นๆ หรือไม่
         if (equippedWeapon != null)
         {
             currentAmmoInMag = equippedWeapon.magazineSize;
             totalAmmo = equippedWeapon.weaponType == WeaponType.Pistol ? int.MaxValue : equippedWeapon.maxAmmo;
         }
 
-        // หาตัว SpriteRenderer ของปืน
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer == null)
         {
             Debug.LogError("SpriteRenderer not found on the weapon!");
-        }
-    }
-
-    // ฟังก์ชันนี้เพื่อให้สามารถตั้งค่า firePoint จากภายนอก
-    public void SetFirePoint(Transform newFirePoint)
-    {
-        firePoint = newFirePoint;
-        if (equippedWeapon != null)
-        {
-            equippedWeapon.firePoint = firePoint;  // มอบค่า firePoint ให้กับ Weapons
         }
     }
 
@@ -47,25 +35,46 @@ public class WeaponController : MonoBehaviour
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
         // เช็คทิศทางที่ปืนต้องการหมุน
-        bool shouldFlip = (angle > 90f || angle < -90f);  // ถ้าปืนหันไปทางซ้าย (มากกว่า 90 องศาหรือน้อยกว่า -90 องศา)
+        bool shouldFlip = (angle > 90f || angle < -90f);  // ถ้าปืนหันไปทางซ้าย
 
-        if (spriteRenderer != null) // ตรวจสอบว่ามีการสร้าง spriteRenderer แล้วหรือยัง
+        if (spriteRenderer != null)
         {
             if (shouldFlip && !isFlipped)
             {
-                // Flip Sprite เมื่อถึงจุดที่ต้องการ
                 spriteRenderer.flipX = true;  // ทำการ flip Sprite ของปืน
-                isFlipped = true;  // ตั้งค่าให้ flip เสร็จ
+                isFlipped = true;
             }
             else if (!shouldFlip && isFlipped)
             {
-                // กลับสภาพปืนให้เป็นทิศทางเดิมเมื่อมันหันกลับไปขวา
-                spriteRenderer.flipX = false;  // กลับด้าน Sprite
-                isFlipped = false;  // ตั้งค่าให้กลับสู่สภาพปกติ
+                spriteRenderer.flipX = false;  // กลับสภาพปืนให้เป็นทิศทางเดิม
+                isFlipped = false;
             }
         }
 
         // หมุนปืนไปตามทิศทางเมาส์
         transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
+
+    public void Shoot()
+    {
+        // ตรวจสอบว่า equippedWeapon มีค่าและมี firePoint หรือไม่
+        if (equippedWeapon != null && equippedWeapon.firePoint != null)
+        {
+            GameObject bullet = Instantiate(equippedWeapon.bulletPrefab, equippedWeapon.firePoint.position, equippedWeapon.firePoint.rotation);
+            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+            Vector2 shootDirection = equippedWeapon.firePoint.right;
+
+            // การกระจายของกระสุน
+            float spreadAngle = Random.Range(-equippedWeapon.spread, equippedWeapon.spread);
+            shootDirection = Quaternion.Euler(0, 0, spreadAngle) * shootDirection;
+
+            rb.linearVelocity = shootDirection * 20f; // ความเร็วของกระสุน
+        }
+
+        // ลดจำนวนกระสุนในแม็กกาซีน
+        if (equippedWeapon.weaponType != WeaponType.Pistol)
+        {
+            currentAmmoInMag--; // ลดกระสุน
+        }
     }
 }
