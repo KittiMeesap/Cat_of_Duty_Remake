@@ -2,7 +2,7 @@
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
-public class CharacterController : Character
+public class CharacterControl : Character
 {
     private Rigidbody2D rb;
     private Animator animator;
