@@ -104,7 +104,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   equippedWeapon: {fileID: 11400000, guid: 4e3d705934f98014d8199d324371f296, type: 2}
-  firePoint: {fileID: 8949091785216644433}
   currentAmmoInMag: 30
   totalAmmo: 30
   rotationSpeed: 180
@@ -122,15 +121,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: SMG
   weaponPrefab: {fileID: 6096463992465449017}
-  weaponType: 2
+  weaponType: 3
   spread: 1
-  bulletRange: 50
-  fireRate: 20
+  bulletRange: 5
+  fireRate: 1
   magazineSize: 25
   maxAmmo: 75
   bulletPrefab: {fileID: 5816894742159069417, guid: 92c55fe47d61bb14dada55d9c4a2d16d, type: 3}
   firePoint: {fileID: 8949091785216644433}
   weaponController: {fileID: 1028476848228621315}
+  bulletSpeed: 10
+  isAutomatic: 1
 --- !u!114 &-3413838060053127946
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -30,9 +30,21 @@ public class WeaponController : MonoBehaviour
     {
         RotateWeapon();
 
-        if (Input.GetButton("Fire1") && Time.time >= nextFireTime)
+        if (equippedWeapon.isAutomatic)
         {
-            Shoot();
+            // สำหรับปืนอัตโนมัติ กดค้างยิงรัว
+            if (Input.GetButton("Fire1") && Time.time >= nextFireTime)
+            {
+                Shoot();
+            }
+        }
+        else
+        {
+            // สำหรับปืนกึ่งอัตโนมัติ กดยิงได้ทีละนัด
+            if (Input.GetButtonDown("Fire1") && Time.time >= nextFireTime)
+            {
+                Shoot();
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -46,35 +58,61 @@ public class WeaponController : MonoBehaviour
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = mousePosition - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        // หมุนปืน
         transform.rotation = Quaternion.Euler(0, 0, angle);
+
+        // ดึงสเกลปัจจุบัน แล้วแค่สลับ Y
+        Vector3 currentScale = transform.localScale;
+        if (Mathf.Abs(angle) > 90)
+        {
+            transform.localScale = new Vector3(currentScale.x, -Mathf.Abs(currentScale.y), currentScale.z); // พลิก Y โดยรักษา X/Z
+        }
+        else
+        {
+            transform.localScale = new Vector3(currentScale.x, Mathf.Abs(currentScale.y), currentScale.z); // คง Y ปกติ
+        }
     }
+
 
     public void Shoot()
     {
-        if (currentAmmoInMag > 0 || equippedWeapon.weaponType == WeaponType.Pistol)
+        if (currentAmmoInMag <= 0 && equippedWeapon.weaponType != WeaponType.Pistol)
         {
-            if (equippedWeapon.firePoint != null && equippedWeapon.bulletPrefab != null)
+            Debug.Log("Out of ammo! Reload your weapon.");
+            return; // หยุดการยิงถ้ากระสุนหมด (ยกเว้นปืนพก)
+        }
+
+        if (equippedWeapon.firePoint != null && equippedWeapon.bulletPrefab != null)
+        {
+            int bulletCount = equippedWeapon.weaponType == WeaponType.Shotgun ? 8 : 1; // ยิง 1 นัดสำหรับ AR และปืนอื่นๆ
+
+            for (int i = 0; i < bulletCount; i++)
             {
                 GameObject bullet = Instantiate(equippedWeapon.bulletPrefab, equippedWeapon.firePoint.position, equippedWeapon.firePoint.rotation);
                 Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-                Vector2 shootDirection = equippedWeapon.firePoint.right;
-                float spreadAngle = Random.Range(-equippedWeapon.spread, equippedWeapon.spread);
-                shootDirection = Quaternion.Euler(0, 0, spreadAngle) * shootDirection;
-                rb.linearVelocity = shootDirection * 20f;
 
-                if (equippedWeapon.weaponType != WeaponType.Pistol)
+                Vector2 shootDirection = equippedWeapon.firePoint.right;
+
+                // ใส่ spreadAngle แค่สำหรับลูกซองเท่านั้น
+                if (equippedWeapon.weaponType == WeaponType.Shotgun)
                 {
-                    currentAmmoInMag--;
+                    float spreadAngle = Random.Range(-equippedWeapon.spread, equippedWeapon.spread);
+                    shootDirection = Quaternion.Euler(0, 0, spreadAngle) * shootDirection;
                 }
 
-                nextFireTime = Time.time + 1f / equippedWeapon.fireRate;
+                rb.linearVelocity = shootDirection * equippedWeapon.bulletSpeed;
             }
-            else
+
+            if (equippedWeapon.weaponType != WeaponType.Pistol)
             {
-                Debug.LogError("firePoint or bulletPrefab is not assigned in the equipped weapon!");
+                currentAmmoInMag--;
             }
+
+            nextFireTime = Time.time + 1f / equippedWeapon.fireRate;
         }
     }
+
 
     public void Reload()
     {

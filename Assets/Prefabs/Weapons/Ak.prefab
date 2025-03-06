@@ -135,7 +135,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   equippedWeapon: {fileID: 11400000, guid: f350217621b6e4f4699dfb2d672c32c2, type: 2}
-  firePoint: {fileID: 4231460807649518638}
   currentAmmoInMag: 30
   totalAmmo: 30
   rotationSpeed: 180
@@ -153,15 +152,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: AK
   weaponPrefab: {fileID: 8303001320290148958}
-  weaponType: 1
+  weaponType: 2
   spread: 1
-  bulletRange: 50
-  fireRate: 30
+  bulletRange: 5
+  fireRate: 1
   magazineSize: 30
   maxAmmo: 90
   bulletPrefab: {fileID: 6977387708991528478, guid: eb2540b6c7935d84eb0c220598878ff2, type: 3}
   firePoint: {fileID: 4231460807649518638}
   weaponController: {fileID: 264483403930063890}
+  bulletSpeed: 10
+  isAutomatic: 1
 --- !u!114 &-2890159330204315169
 MonoBehaviour:
   m_ObjectHideFlags: 0

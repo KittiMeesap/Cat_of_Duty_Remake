@@ -104,7 +104,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   equippedWeapon: {fileID: 11400000, guid: 809cfa774d8997c4088b61d012c2dec5, type: 2}
-  firePoint: {fileID: 5885816290167374742}
   currentAmmoInMag: 8
   totalAmmo: 8
   rotationSpeed: 180
@@ -122,15 +121,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Shotgun
   weaponPrefab: {fileID: 4902956103986137542}
-  weaponType: 3
-  spread: 5
-  bulletRange: 10
+  weaponType: 4
+  spread: 15
+  bulletRange: 2
   fireRate: 1
   magazineSize: 8
   maxAmmo: 24
   bulletPrefab: {fileID: 150040154368022213, guid: bd7b6288d2537524c9bae126e5ae3d8c, type: 3}
   firePoint: {fileID: 5885816290167374742}
   weaponController: {fileID: 2861408923576925910}
+  bulletSpeed: 10
+  isAutomatic: 0
 --- !u!114 &-3674981504373281906
 MonoBehaviour:
   m_ObjectHideFlags: 0
