@@ -3,13 +3,12 @@ using UnityEngine;
 
 public class PlayerWeaponManager : MonoBehaviour
 {
-    public List<Weapons> ownedWeapons = new List<Weapons>();  // รายการอาวุธที่มี
+    public List<Weapons> ownedWeapons = new List<Weapons>();
     public int currentWeaponIndex = 0;
 
     public WeaponController weaponController;
     public Transform weaponHolder; // จุดที่เก็บปืนในตัวผู้เล่น
     private GameObject currentWeaponObject; // อ็อบเจ็กต์ของปืนที่ถืออยู่
-    private float nextFireTime;  // เวลาถัดไปในการยิง
 
     private void Start()
     {
@@ -25,10 +24,11 @@ public class PlayerWeaponManager : MonoBehaviour
 
     private void Update()
     {
-        HandleWeaponSwitch();  // การสลับปืน
-        HandleShooting();      // การยิง
-        HandleReloading();     // การรีโหลด
-        HandleWeaponRotation(); // การหมุนปืน
+        HandleWeaponSwitch();
+        if (weaponController != null)
+        {
+            weaponController.HandleInput();
+        }
     }
 
     public void EquipWeapon(int index)
@@ -37,21 +37,23 @@ public class PlayerWeaponManager : MonoBehaviour
 
         Weapons selectedWeapon = ownedWeapons[index];
 
-        // ลบปืนเก่าในฉากก่อน (ถ้ามี)
         if (currentWeaponObject != null)
         {
             Destroy(currentWeaponObject);
         }
 
-        // สร้างปืนจากพรีแฟ็บ
         currentWeaponObject = Instantiate(selectedWeapon.weaponPrefab, weaponHolder.position, Quaternion.identity, weaponHolder);
 
-        // ตั้งค่า WeaponController ให้กับปืนที่สร้างใหม่
+        Weapons weaponInstance = currentWeaponObject.GetComponent<Weapons>();
         weaponController = currentWeaponObject.GetComponent<WeaponController>();
-        weaponController.equippedWeapon = selectedWeapon;
+        weaponController.equippedWeapon = weaponInstance; // ใช้ instance ที่สร้างใหม่
 
-        // ไม่มีการใช้ SetFirePoint แล้ว เพราะ firePoint ถูกตั้งค่าจาก WeaponController เอง
-        Debug.Log("Equipped: " + selectedWeapon.weaponName);
+        if (weaponInstance.firePoint == null)
+        {
+            Debug.LogError($"firePoint is not assigned in the prefab for {weaponInstance.weaponName}!");
+        }
+
+        Debug.Log("Equipped: " + weaponInstance.weaponName);
     }
 
     private void HandleWeaponSwitch()
@@ -68,64 +70,6 @@ public class PlayerWeaponManager : MonoBehaviour
         }
 
         EquipWeapon(currentWeaponIndex);
-    }
-
-    private void HandleShooting()
-    {
-        if (Input.GetButton("Fire1") && Time.time >= nextFireTime && weaponController != null)
-        {
-            Shoot(); // ฟังก์ชันที่ยิงกระสุน
-            nextFireTime = Time.time + 1f / weaponController.equippedWeapon.fireRate; // รีเซ็ตเวลาการยิง
-        }
-    }
-
-    private void HandleReloading()
-    {
-        if (Input.GetKeyDown(KeyCode.R) && weaponController != null)
-        {
-            Reload();
-        }
-    }
-
-    private void HandleWeaponRotation()
-    {
-        if (weaponController != null)
-        {
-            weaponController.RotateWeapon(); // หมุนปืนตามทิศทางเมาส์
-        }
-    }
-
-    private void Shoot()
-    {
-        if (weaponController.currentAmmoInMag > 0 || weaponController.equippedWeapon.weaponType == WeaponType.Pistol)
-        {
-            if (weaponController.equippedWeapon.bulletPrefab != null && weaponController.equippedWeapon.firePoint != null)
-            {
-                GameObject bullet = Instantiate(weaponController.equippedWeapon.bulletPrefab, weaponController.equippedWeapon.firePoint.position, weaponController.equippedWeapon.firePoint.rotation);
-                Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-                Vector2 shootDirection = weaponController.equippedWeapon.firePoint.right;
-
-                // การกระจายของกระสุน
-                float spreadAngle = Random.Range(-weaponController.equippedWeapon.spread, weaponController.equippedWeapon.spread);
-                shootDirection = Quaternion.Euler(0, 0, spreadAngle) * shootDirection;
-
-                rb.linearVelocity = shootDirection * 20f; // ความเร็วของกระสุน
-            }
-
-            // ลดจำนวนกระสุนในแม็กกาซีน
-            if (weaponController.equippedWeapon.weaponType != WeaponType.Pistol)
-            {
-                weaponController.currentAmmoInMag--; // ลดกระสุน
-            }
-        }
-    }
-
-    private void Reload()
-    {
-        int ammoNeeded = weaponController.equippedWeapon.magazineSize - weaponController.currentAmmoInMag;
-        int ammoToReload = Mathf.Min(ammoNeeded, weaponController.totalAmmo);
-        weaponController.currentAmmoInMag += ammoToReload;
-        weaponController.totalAmmo -= ammoToReload;
     }
 
     public void AddWeapon(Weapons newWeapon)
